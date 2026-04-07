@@ -90,6 +90,10 @@ if old_file and new_file:
                 "Zielenddatum_new": "Zielende_neu",
             })
 
+            int_cols = ["Start_Delta_Tage", "End_Delta_Tage", "Dauer_alt", "Dauer_neu"]
+            for col in int_cols:
+            result[col] = result[col].astype("Int64")
+
             def highlight_duration(row):
                 styles = [""] * len(row)
 
@@ -116,7 +120,16 @@ if old_file and new_file:
                 result[col] = result[col].dt.strftime("%Y-%m-%d")
                 result[col] = result[col].fillna("")
 
-            styled_result = result.style.apply(highlight_duration, axis=1)
+            styled_result = (
+                result.style
+                .apply(highlight_duration, axis=1)
+                .format({
+                    "Start_Delta_Tage": lambda x: "" if pd.isna(x) else f"{int(x)}",
+                    "End_Delta_Tage": lambda x: "" if pd.isna(x) else f"{int(x)}",
+                    "Dauer_alt": lambda x: "" if pd.isna(x) else f"{int(x)}",
+                    "Dauer_neu": lambda x: "" if pd.isna(x) else f"{int(x)}",
+                })
+            )
 
             st.success(f"{len(result)} geänderte Vorgänge gefunden")
             st.dataframe(styled_result, use_container_width=True, hide_index=True)
