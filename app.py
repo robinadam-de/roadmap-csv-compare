@@ -61,12 +61,20 @@ if old_file and new_file:
                 changes["Zielenddatum_new"] - changes["Zielenddatum_old"]
             ).dt.days
 
+            changes["Dauer_alt"] = (
+                changes["Zielenddatum_old"] - changes["Zielstartdatum_old"]
+            ).dt.days + 1
+
+            changes["Dauer_neu"] = (
+                changes["Zielenddatum_new"] - changes["Zielstartdatum_new"]
+            ).dt.days + 1
+
             result = changes[[
                 "Vorgangsschlüssel",
                 "Titel_old",
-                "Zielstartdatum_old", "Zielstartdatum_new",
+                "Zielstartdatum_old", "Zielenddatum_old", "Dauer_alt",
+                "Zielstartdatum_new", "Zielenddatum_new", "Dauer_neu",
                 "Start_Delta_Tage",
-                "Zielenddatum_old", "Zielenddatum_new",
                 "End_Delta_Tage"
             ]].copy()
 
