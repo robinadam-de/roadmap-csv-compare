@@ -92,7 +92,7 @@ if old_file and new_file:
 
             int_cols = ["Start_Delta_Tage", "End_Delta_Tage", "Dauer_alt", "Dauer_neu"]
             for col in int_cols:
-            result[col] = result[col].astype("Int64")
+                result[col] = result[col].astype("Int64")
 
             def highlight_duration(row):
                 styles = [""] * len(row)
