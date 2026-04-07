@@ -90,12 +90,36 @@ if old_file and new_file:
                 "Zielenddatum_new": "Zielende_neu",
             })
 
+            def highlight_duration(row):
+                styles = [""] * len(row)
+
+                idx_alt = row.index.get_loc("Dauer_alt")
+                idx_neu = row.index.get_loc("Dauer_neu")
+
+                dauer_alt = row["Dauer_alt"]
+                dauer_neu = row["Dauer_neu"]
+
+                if pd.notna(dauer_alt) and pd.notna(dauer_neu):
+                    if dauer_neu <= dauer_alt:
+                        styles[idx_alt] = "background-color: #d4edda"
+                        styles[idx_neu] = "background-color: #d4edda"
+                    else:
+                        styles[idx_alt] = "background-color: #f8d7da"
+                        styles[idx_neu] = "background-color: #f8d7da"
+
+                elif pd.notna(dauer_alt) and pd.isna(dauer_neu):
+                    styles[idx_neu] = "background-color: #f8d7da"
+
+                return styles
+
             for col in ["Zielstart_alt", "Zielstart_neu", "Zielende_alt", "Zielende_neu"]:
                 result[col] = result[col].dt.strftime("%Y-%m-%d")
                 result[col] = result[col].fillna("")
 
+            styled_result = result.style.apply(highlight_duration, axis=1)
+
             st.success(f"{len(result)} geänderte Vorgänge gefunden")
-            st.dataframe(result, use_container_width=True, hide_index=True)
+            st.dataframe(styled_result, use_container_width=True, hide_index=True)
 
     except Exception as e:
         st.error(f"Fehler beim Verarbeiten der Dateien: {e}")
