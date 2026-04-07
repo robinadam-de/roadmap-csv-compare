@@ -72,10 +72,14 @@ if old_file and new_file:
             result = changes[[
                 "Vorgangsschlüssel",
                 "Titel_old",
-                "Zielstartdatum_old", "Zielenddatum_old", "Dauer_alt",
-                "Zielstartdatum_new", "Zielenddatum_new", "Dauer_neu",
+                "Zielstartdatum_old",
+                "Zielenddatum_old",
+                "Zielstartdatum_new",
+                "Zielenddatum_new",
                 "Start_Delta_Tage",
-                "End_Delta_Tage"
+                "End_Delta_Tage",
+                "Dauer_alt",
+                "Dauer_neu"
             ]].copy()
 
             result = result.rename(columns={
