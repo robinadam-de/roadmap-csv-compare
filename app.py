@@ -12,6 +12,7 @@ DATE_COLS = ["Zielstartdatum", "Zielenddatum"]
 KEY_COL = "Vorgangsschlüssel"
 TITLE_COL = "Titel"
 HIERARCHY_COL = "Hierachie"
+ASSIGNEE_COL = "Zugewiesene Person"
 
 def prepare_df(file):
     df = pd.read_csv(file)
@@ -27,7 +28,7 @@ if old_file and new_file:
         old = prepare_df(old_file)
         new = prepare_df(new_file)
 
-        required_cols = [KEY_COL, TITLE_COL, HIERARCHY_COL, "Zielstartdatum", "Zielenddatum"]
+        required_cols = [KEY_COL, TITLE_COL, HIERARCHY_COL, ASSIGNEE_COL, "Zielstartdatum", "Zielenddatum"]
         missing_old = [c for c in required_cols if c not in old.columns]
         missing_new = [c for c in required_cols if c not in new.columns]
 
@@ -73,6 +74,7 @@ if old_file and new_file:
             result = changes[[
                 "Vorgangsschlüssel",
                 "Titel_old",
+                "Zugewiesene Person_old",
                 "Hierachie_old",
                 "Zielstartdatum_old",
                 "Zielenddatum_old",
@@ -86,6 +88,7 @@ if old_file and new_file:
 
             result = result.rename(columns={
                 "Titel_old": "Titel",
+                "Zugewiesene Person_old": "Zugewiesene Person",
                 "Hierachie_old": "Hierachie",
                 "Zielstartdatum_old": "Zielstart_alt",
                 "Zielstartdatum_new": "Zielstart_neu",
