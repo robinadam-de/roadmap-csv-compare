@@ -11,7 +11,7 @@ new_file = st.file_uploader("Neue CSV", type="csv")
 DATE_COLS = ["Zielstartdatum", "Zielenddatum"]
 KEY_COL = "Vorgangsschlüssel"
 TITLE_COL = "Titel"
-ISSUE_TYPE_COL = "Vorgangstyp"
+HIERARCHY_COL = "Hierachie"
 
 def prepare_df(file):
     df = pd.read_csv(file)
@@ -27,7 +27,7 @@ if old_file and new_file:
         old = prepare_df(old_file)
         new = prepare_df(new_file)
 
-        required_cols = [KEY_COL, TITLE_COL, ISSUE_TYPE_COL, "Zielstartdatum", "Zielenddatum"]
+        required_cols = [KEY_COL, TITLE_COL, HIERARCHY_COL, "Zielstartdatum", "Zielenddatum"]
         missing_old = [c for c in required_cols if c not in old.columns]
         missing_new = [c for c in required_cols if c not in new.columns]
 
@@ -73,7 +73,7 @@ if old_file and new_file:
             result = changes[[
                 "Vorgangsschlüssel",
                 "Titel_old",
-                "Vorgangstyp_old",
+                "Hierachie_old",
                 "Zielstartdatum_old",
                 "Zielenddatum_old",
                 "Zielstartdatum_new",
@@ -86,7 +86,7 @@ if old_file and new_file:
 
             result = result.rename(columns={
                 "Titel_old": "Titel",
-                "Vorgangstyp_old": "Vorgangstyp",
+                "Hierachie_old": "Hierachie",
                 "Zielstartdatum_old": "Zielstart_alt",
                 "Zielstartdatum_new": "Zielstart_neu",
                 "Zielenddatum_old": "Zielende_alt",
@@ -100,7 +100,9 @@ if old_file and new_file:
             only_initiatives = st.toggle("Nur Initiativen anzeigen", value=False)
 
             if only_initiatives:
-                result = result[result["Vorgangstyp"].astype(str).str.strip().str.lower() == "initiative"].copy()
+                result = result[
+                    result["Hierachie"].astype(str).str.strip().str.lower() == "initiative"
+                ].copy()
 
             def highlight_duration(row):
                 styles = [""] * len(row)
@@ -129,7 +131,7 @@ if old_file and new_file:
                 result[col] = result[col].fillna("")
 
             styled_result = (
-                result.drop(columns=["Vorgangstyp"]).style
+                result.drop(columns=["Hierachie"]).style
                 .apply(highlight_duration, axis=1)
                 .format({
                     "Start_Delta_Tage": lambda x: "" if pd.isna(x) else f"{int(x)}",
