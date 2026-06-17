@@ -151,15 +151,21 @@ def filter_initiatives(result):
 
 
 def highlight_duration(row):
-    """Hebt Dauer-Änderungen farblich hervor."""
+    """Hebt Dauer-Änderungen farblich hervor und markiert Delta-Zellen."""
     styles = [""] * len(row)
 
+    # Indizes für Spalten finden
     idx_alt = row.index.get_loc("Dauer_alt")
     idx_neu = row.index.get_loc("Dauer_neu")
+
+    # Indizes für Delta-Spalten
+    idx_start_delta = row.index.get_loc("Start_Delta_Tage")
+    idx_end_delta = row.index.get_loc("End_Delta_Tage")
 
     dauer_alt = row["Dauer_alt"]
     dauer_neu = row["Dauer_neu"]
 
+    # Dauer-Färbung wie vorher
     if pd.notna(dauer_alt) and pd.notna(dauer_neu):
         if dauer_neu <= dauer_alt:
             styles[idx_alt] = "background-color: #d4edda"
@@ -170,6 +176,30 @@ def highlight_duration(row):
 
     elif pd.notna(dauer_alt) and pd.isna(dauer_neu):
         styles[idx_neu] = "background-color: #f8d7da"
+
+    # Delta-Färbung: >0 = rot, <0 = grün, ==0 = keine Farbe
+    start_delta = row["Start_Delta_Tage"]
+    end_delta = row["End_Delta_Tage"]
+
+    if pd.notna(start_delta):
+        try:
+            sd = int(start_delta)
+            if sd > 0:
+                styles[idx_start_delta] = "background-color: #f8d7da"
+            elif sd < 0:
+                styles[idx_start_delta] = "background-color: #d4edda"
+        except Exception:
+            pass
+
+    if pd.notna(end_delta):
+        try:
+            ed = int(end_delta)
+            if ed > 0:
+                styles[idx_end_delta] = "background-color: #f8d7da"
+            elif ed < 0:
+                styles[idx_end_delta] = "background-color: #d4edda"
+        except Exception:
+            pass
 
     return styles
 
