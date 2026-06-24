@@ -167,6 +167,10 @@ def highlight_duration(row):
     idx_start_delta = row.index.get_loc("Start_Delta_Tage")
     idx_end_delta = row.index.get_loc("End_Delta_Tage")
 
+    # Indizes für Status-Spalten
+    idx_status_alt = row.index.get_loc("Status_alt")
+    idx_status_neu = row.index.get_loc("Status_neu")
+
     dauer_alt = row["Dauer_alt"]
     dauer_neu = row["Dauer_neu"]
 
@@ -205,6 +209,15 @@ def highlight_duration(row):
                 styles[idx_end_delta] = "background-color: #d4edda"
         except Exception:
             pass
+
+    # Status-Färbung: wenn Status_alt != Status_neu, leicht blau hinterlegen
+    status_alt = row["Status_alt"]
+    status_neu = row["Status_neu"]
+
+    if pd.notna(status_alt) and pd.notna(status_neu):
+        if status_alt != status_neu:
+            styles[idx_status_alt] = "background-color: #cce5ff"
+            styles[idx_status_neu] = "background-color: #cce5ff"
 
     return styles
 
