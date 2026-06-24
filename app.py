@@ -287,7 +287,7 @@ if old_file and new_file:
                 )
 
                 st.success(f"{len(result)} geänderte Vorgänge gefunden")
-                st.dataframe(styled_result, use_container_width=True, hide_index=True)
+                st.dataframe(styled_result, use_container_width=True, hide_index=True, height=900)
             else:
                 st.info("Nach Filterung keine Vorgänge vorhanden.")
 
