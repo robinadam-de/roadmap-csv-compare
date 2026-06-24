@@ -111,15 +111,15 @@ def format_result(changes):
         f"{ASSIGNEE_COL}_old",
         f"{STATUS_COL}_old",
         f"{STATUS_COL}_new",
-        f"{HIERARCHY_COL}_old",
         "Zielstartdatum_old",
-        "Zielenddatum_old",
         "Zielstartdatum_new",
+        "Zielenddatum_old",
         "Zielenddatum_new",
         "Start_Delta_Tage",
         "End_Delta_Tage",
         "Dauer_alt",
-        "Dauer_neu"
+        "Dauer_neu",
+        f"{HIERARCHY_COL}_old"
     ]
     
     result = changes[result_cols].copy()
