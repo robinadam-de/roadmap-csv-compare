@@ -171,6 +171,12 @@ def highlight_duration(row):
     idx_status_alt = row.index.get_loc("Status_alt")
     idx_status_neu = row.index.get_loc("Status_neu")
 
+    # Indizes für Zielstart/ende-Spalten
+    idx_zielstart_alt = row.index.get_loc("Zielstart_alt")
+    idx_zielstart_neu = row.index.get_loc("Zielstart_neu")
+    idx_zielende_alt = row.index.get_loc("Zielende_alt")
+    idx_zielende_neu = row.index.get_loc("Zielende_neu")
+
     dauer_alt = row["Dauer_alt"]
     dauer_neu = row["Dauer_neu"]
 
@@ -218,6 +224,24 @@ def highlight_duration(row):
         if status_alt != status_neu:
             styles[idx_status_alt] = "background-color: #cce5ff"
             styles[idx_status_neu] = "background-color: #cce5ff"
+
+    # Zielstart-Färbung: wenn Zielstart_alt != Zielstart_neu, leicht blau hinterlegen
+    zielstart_alt = row["Zielstart_alt"]
+    zielstart_neu = row["Zielstart_neu"]
+
+    if pd.notna(zielstart_alt) and pd.notna(zielstart_neu):
+        if str(zielstart_alt) != str(zielstart_neu):
+            styles[idx_zielstart_alt] = "background-color: #cce5ff"
+            styles[idx_zielstart_neu] = "background-color: #cce5ff"
+
+    # Zielende-Färbung: wenn Zielende_alt != Zielende_neu, leicht blau hinterlegen
+    zielende_alt = row["Zielende_alt"]
+    zielende_neu = row["Zielende_neu"]
+
+    if pd.notna(zielende_alt) and pd.notna(zielende_neu):
+        if str(zielende_alt) != str(zielende_neu):
+            styles[idx_zielende_alt] = "background-color: #cce5ff"
+            styles[idx_zielende_neu] = "background-color: #cce5ff"
 
     return styles
 
