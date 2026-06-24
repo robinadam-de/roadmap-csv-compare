@@ -17,8 +17,9 @@ KEY_COL = "Vorgangsschlüssel"
 TITLE_COL = "Titel"
 HIERARCHY_COL = "Hierachie"
 ASSIGNEE_COL = "Zugewiesene Person"
+STATUS_COL = "Status"
 
-REQUIRED_COLS = [KEY_COL, TITLE_COL, HIERARCHY_COL, ASSIGNEE_COL, "Zielstartdatum", "Zielenddatum"]
+REQUIRED_COLS = [KEY_COL, TITLE_COL, HIERARCHY_COL, ASSIGNEE_COL, STATUS_COL, "Zielstartdatum", "Zielenddatum"]
 INT_COLS = ["Start_Delta_Tage", "End_Delta_Tage", "Dauer_alt", "Dauer_neu"]
 DATE_OUTPUT_COLS = ["Zielstart_alt", "Zielstart_neu", "Zielende_alt", "Zielende_neu"]
 
@@ -57,7 +58,7 @@ def validate_dataframes(old, new):
 def merge_and_filter_changes(old, new):
     """Merged DataFrames und filtert nur geänderte Zeilen."""
     # Nur notwendige Spalten vor dem Merge behalten
-    merge_cols = [KEY_COL] + DATE_COLS + [TITLE_COL, HIERARCHY_COL, ASSIGNEE_COL]
+    merge_cols = [KEY_COL] + DATE_COLS + [TITLE_COL, HIERARCHY_COL, ASSIGNEE_COL, STATUS_COL]
     old_selected = old[[c for c in merge_cols if c in old.columns]].copy()
     new_selected = new[[c for c in merge_cols if c in new.columns]].copy()
     
@@ -108,6 +109,8 @@ def format_result(changes):
         KEY_COL,
         "Titel_old",
         f"{ASSIGNEE_COL}_old",
+        f"{STATUS_COL}_old",
+        f"{STATUS_COL}_new",
         f"{HIERARCHY_COL}_old",
         "Zielstartdatum_old",
         "Zielenddatum_old",
@@ -124,6 +127,8 @@ def format_result(changes):
     result = result.rename(columns={
         "Titel_old": "Titel",
         f"{ASSIGNEE_COL}_old": ASSIGNEE_COL,
+        f"{STATUS_COL}_old": "Status_alt",
+        f"{STATUS_COL}_new": "Status_neu",
         f"{HIERARCHY_COL}_old": HIERARCHY_COL,
         "Zielstartdatum_old": "Zielstart_alt",
         "Zielstartdatum_new": "Zielstart_neu",
