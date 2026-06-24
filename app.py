@@ -17,7 +17,7 @@ KEY_COL = "Vorgangsschlüssel"
 TITLE_COL = "Titel"
 HIERARCHY_COL = "Hierachie"
 ASSIGNEE_COL = "Zugewiesene Person"
-STATUS_COL = "Status"
+STATUS_COL = "Vorgangsstatus"
 
 REQUIRED_COLS = [KEY_COL, TITLE_COL, HIERARCHY_COL, ASSIGNEE_COL, STATUS_COL, "Zielstartdatum", "Zielenddatum"]
 INT_COLS = ["Start_Delta_Tage", "End_Delta_Tage", "Dauer_alt", "Dauer_neu"]
